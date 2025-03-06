@@ -1,7 +1,9 @@
-from typing import List
+import heapq
+from typing import Counter, List
 
 
 class Solution:
+    # O(N^2) Time | O(N) Space
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         frequent = {}
 
@@ -10,7 +12,7 @@ class Solution:
                 frequent[num] = 1
             else:
                 frequent[num] += 1
-                
+
         result = []
         max_key = float('-inf')
         for _ in range(k):
@@ -26,6 +28,21 @@ class Solution:
 
         return result
 
+class Solution2:
+    # Optimized version
+    # O(N log K) Time | O(N) Space
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        freq_map = Counter(nums)
+        heap = []
+
+        for num, freq in freq_map.items():
+            heapq.heappush(heap, (freq, num))
+
+            if len(heap) > k:
+                heapq.heappop(heap)
+
+        result = [num for _, num in heap]
+        return result
 
 if __name__ == "__main__":
     s = Solution()
@@ -34,6 +51,6 @@ if __name__ == "__main__":
 
     k = 2
 
-    s = Solution()
+    s = Solution2()
 
     print(s.topKFrequent(nums, k))

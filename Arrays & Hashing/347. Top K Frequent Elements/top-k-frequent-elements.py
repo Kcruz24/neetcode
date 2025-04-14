@@ -29,6 +29,22 @@ class Solution:
         return result
 
 class Solution2:
+    # O(NLog(N)) Time | O(N) Space
+    def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+        counter = Counter(nums)
+        sorted_dict_items = sorted(counter.items(), key=lambda item: item[1], reverse=True)
+        sorted_dict = dict(sorted_dict_items)
+        res = []
+
+        for key in sorted_dict.keys():
+            res.append(key)
+            k -= 1
+            if k == 0:
+                break
+
+        return res
+
+class Solution3:
     # Optimized version
     # O(N log K) Time | O(N) Space
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:

@@ -1,33 +1,36 @@
 from typing import List
 
 class Solution:
-    # O(N^2) Time | O(N) Space
+    # O(N^2) Time | O(log(N)) Space
     def threeSum(self, nums: List[int]) -> List[List[int]]:
+        ans = []
         nums.sort()
-        res = []
-        for i in range(len(nums)):
-            if nums[i] > 0:
+        for idx in range(len(nums)):
+            if nums[idx] > 0:
                 break
+            if idx == 0 or nums[idx - 1] != nums[idx]:
+                self.twoSum(nums, idx, ans)
+        return ans
 
-            if i == 0 or nums[i - 1] != nums[i]:
-                left = i + 1
-                right = len(nums) - 1
-                while left < right:
-                    total = nums[i] + nums[left] + nums[right]
+    def twoSum(self, numbers: List[int], idx: int, ans: List[List[int]]) -> List[int]:
+        left = idx + 1
+        right = len(numbers) - 1
 
-                    if total == 0:
-                        res.append((nums[i], nums[left], nums[right]))
-                        left += 1
-                        right -= 1
+        while left < right:
+            total = numbers[idx] + numbers[left] + numbers[right]
 
-                        while left < right and nums[left] == nums[left - 1]:
-                            left += 1
-                    elif total > 0:
-                        right -= 1
-                    elif total < 0:
-                        left += 1
+            if total < 0:
+                left += 1
+            elif total > 0:
+                right -= 1
+            else:
+                ans.append([numbers[left], numbers[right], numbers[idx]])
 
-        return res
+                left += 1
+                right -= 1
+                while left < right and numbers[left] == numbers[left - 1]:
+                    left += 1
+
 
 sol = Solution()
 
